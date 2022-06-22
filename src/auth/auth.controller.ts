@@ -6,6 +6,7 @@ import { AuthService } from './auth.service';
 export class AuthController {
     constructor(private authService: AuthService) { }
 
+    // Route permettant d'écouter le post vers login
     @Post('login')
     async login(@Body() readUserDto: ReadUserDto) {
         return this.authService.login(readUserDto);
