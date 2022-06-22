@@ -12,4 +12,9 @@ export class UsersService {
         const createdUser = new this.userModel(createUserDto)
         return await createdUser.save();
     }
+
+    // Fonctionnalité permettant de retrouver un utilisateur par son adresse mail
+    async findOne(email: string): Promise<User> {
+        return await this.userModel.findOne({ email }).exec();
+    }
 }
