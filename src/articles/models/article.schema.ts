@@ -7,4 +7,5 @@ export const ArticleSchema = new mongoose.Schema({
     content: String,
     author: String,
     creationDate: String,
+    usersLiked: Array<String>
 });
