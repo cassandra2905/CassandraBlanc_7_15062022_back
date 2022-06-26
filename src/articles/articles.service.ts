@@ -4,16 +4,8 @@ import { InjectModel } from '@nestjs/mongoose';
 import { CreateArticleDto } from './dto/create-article.dto';
 import { Article } from './interfaces/article.interface';
 import { updateArticleDto } from './dto/update-article.dto';
-import { UsersService } from 'src/users/users.service';
-import { ReadUserDto } from 'src/users/dto/read-user.dto';
-import { sign } from 'crypto';
-import { userInfo } from 'os';
-import { JwtModule, JwtService } from '@nestjs/jwt';
-import { JwtStrategy } from 'src/auth/jwt.strategy';
-import { authenticate } from 'passport';
 
 // Implementation du CRUD logique métier des routes
-
 @Injectable()
 export class ArticlesService {
     constructor(@InjectModel('Article') private readonly articleModel: Model<Article>) { }
@@ -33,15 +25,14 @@ export class ArticlesService {
         if (!article) { throw new NotFoundException(); }
 
         if (article.usersLiked.includes(userId)) {
-            // J'enlève l'id
+            article.usersLiked = article.usersLiked.filter(id => id !== userId);
         }
 
         else {
-            //  Je push l'id
+            article.usersLiked.push(userId);
         }
 
-        // Enregistrer modification
-        // Return article modifié
+        return await this.articleModel.findByIdAndUpdate(article._id, article, { new: true });
     }
 
     // On veut obtenir un seul article
