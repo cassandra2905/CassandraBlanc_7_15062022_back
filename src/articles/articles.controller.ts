@@ -1,4 +1,5 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Put, UseInterceptors } from '@nestjs/common';
+import { CheckauthorInterceptor } from 'src/checkauthor.interceptor';
 import { ArticlesService } from './articles.service';
 import { CreateArticleDto } from './dto/create-article.dto';
 import { updateArticleDto } from './dto/update-article.dto';
@@ -10,7 +11,9 @@ export class ArticlesController {
 
     // Fonction pour créer un article
     @Post()
+    @UseInterceptors(CheckauthorInterceptor)
     async createArticle(@Body() createArticleDto: CreateArticleDto) {
+        console.log('createArticleDto', createArticleDto);
         return await this.articlesService.create(createArticleDto);
     }
 
