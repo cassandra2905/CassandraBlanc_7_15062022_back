@@ -4,6 +4,7 @@ import { CheckauthorInterceptor } from 'src/checkauthor.interceptor';
 import { ArticlesService } from './articles.service';
 import { CreateArticleDto } from './dto/create-article.dto';
 import { updateArticleDto } from './dto/update-article.dto';
+import { Express } from 'express';
 
 // Ecoute les requêtes entrantes
 @Controller('articles')
@@ -13,7 +14,10 @@ export class ArticlesController {
     // Fonction pour créer un article
     @Post()
     @UseInterceptors(CheckauthorInterceptor, FileInterceptor('image'))
-    async createArticle(@Body() createArticleDto: CreateArticleDto, @UploadedFile() file: Express.Multer.File) {
+    async createArticle(
+        @Body() createArticleDto: CreateArticleDto,
+        @UploadedFile() file: Express.Multer.File
+    ) {
         console.log('createArticleDto', createArticleDto);
         console.log("file", file);
         return await this.articlesService.create(createArticleDto);
