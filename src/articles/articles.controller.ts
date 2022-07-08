@@ -1,4 +1,5 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Put, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, UseInterceptors, UploadedFile } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express/multer/interceptors';
 import { CheckauthorInterceptor } from 'src/checkauthor.interceptor';
 import { ArticlesService } from './articles.service';
 import { CreateArticleDto } from './dto/create-article.dto';
@@ -11,9 +12,10 @@ export class ArticlesController {
 
     // Fonction pour créer un article
     @Post()
-    @UseInterceptors(CheckauthorInterceptor)
-    async createArticle(@Body() createArticleDto: CreateArticleDto) {
+    @UseInterceptors(CheckauthorInterceptor, FileInterceptor('image'))
+    async createArticle(@Body() createArticleDto: CreateArticleDto, @UploadedFile() file: Express.Multer.File) {
         console.log('createArticleDto', createArticleDto);
+        console.log("file", file);
         return await this.articlesService.create(createArticleDto);
     }
 
