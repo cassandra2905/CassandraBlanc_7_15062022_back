@@ -40,7 +40,7 @@ export class AuthService {
         payload.role = foundUser.email === 'admin@admin.fr' ? 'admin' : 'user';
 
         return {
-            access_token: this.jwtService.sign(payload)
-        }
+            access_token: this.jwtService.sign(payload),
+        };
     }
 }

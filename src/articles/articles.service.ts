@@ -40,9 +40,9 @@ export class ArticlesService {
         return await this.articleModel.findById(id).exec();
     }
 
-    // On veut tous les articles
+    // On veut tous les articles classés du plus récent au plus ancien
     async getAllArticles(): Promise<Article[]> {
-        return await this.articleModel.find().exec();
+        return await this.articleModel.find().sort({ creationDate: -1 }).exec();
     }
 
     // On veut mettre à jour un article
