@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, UseInterceptors, UploadedFile } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, UseInterceptors, UploadedFile, ParseFilePipe, MaxFileSizeValidator, FileTypeValidator } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express/multer/interceptors';
 import { CheckauthorInterceptor } from 'src/checkauthor.interceptor';
 import { ArticlesService } from './articles.service';
@@ -12,16 +12,34 @@ export class ArticlesController {
     constructor(private readonly articlesService: ArticlesService) { }
 
     // Fonction pour créer un article
-    @Post()
+    /*@Post()
     @UseInterceptors(CheckauthorInterceptor, FileInterceptor('image'))
     async createArticle(
         @Body() createArticleDto: CreateArticleDto,
-        @UploadedFile() file: Express.Multer.File
+        @UploadedFile(
+            new ParseFilePipe({
+                validators: [
+                    // taille maximum de l'image 5 Mo
+                    new MaxFileSizeValidator({ maxSize: 5_000_000 }),
+                    new FileTypeValidator({ fileType: 'jpeg|png|webp' }),
+                ],
+            }),
+        ) file: Express.Multer.File
     ) {
         console.log('createArticleDto', createArticleDto);
         console.log("file", file);
         return await this.articlesService.create(createArticleDto);
+    }*/
+
+    // Fonction pour créer un article
+
+    @Post()
+    @UseInterceptors(CheckauthorInterceptor)
+    async createArticle(@Body() createArticleDto: CreateArticleDto) {
+        console.log('createArticleDto', createArticleDto);
+        return this.articlesService.create(createArticleDto);
     }
+
 
     @Post(':id/like')
     async likeAnArticle(@Param('id') id: string, @Body('userId') userId: string) {
