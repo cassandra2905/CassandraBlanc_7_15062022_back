@@ -5,6 +5,7 @@ import { ArticlesService } from './articles.service';
 import { ArticlesController } from './articles.controller';
 import { MulterModule } from '@nestjs/platform-express';
 
+// Imports des modules
 @Module({
     imports: [
         MongooseModule.forFeature([{ name: 'Article', schema: ArticleSchema }]),

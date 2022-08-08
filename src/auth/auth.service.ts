@@ -4,7 +4,7 @@ import { ReadUserDto } from 'src/users/dto/read-user.dto';
 import { UsersService } from '../users/users.service';
 
 
-// Implementation logique métier de la route auth
+// Implementation sécurité auth
 @Injectable()
 export class AuthService {
     constructor(
@@ -33,7 +33,8 @@ export class AuthService {
         const payload = {
             createdAt: new Date().toISOString(),
             sub: foundUser._id,
-            role: ''
+            role: '',
+            email: foundUser.email
         };
 
         // On vérifie si l'utilisateur est l'admin

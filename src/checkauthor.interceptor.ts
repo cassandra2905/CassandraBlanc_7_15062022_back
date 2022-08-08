@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 
 // Auteur par défaut de l'article
 @Injectable()
-export class CheckauthorInterceptor implements NestInterceptor {
+export class CheckAuthorInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     const request = context.switchToHttp().getRequest();
     console.log('before', request.body);

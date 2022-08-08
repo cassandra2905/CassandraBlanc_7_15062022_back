@@ -2,7 +2,7 @@
 
 export class updateArticleDto {
     readonly title: string;
-    readonly image: string;
+    image: string;
     readonly content: string;
     readonly author: string;
     readonly creationDate: string;

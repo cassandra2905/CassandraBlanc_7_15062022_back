@@ -1,7 +1,7 @@
-import { CheckauthorInterceptor } from './checkauthor.interceptor';
+import { CheckAuthorInterceptor } from './checkauthor.interceptor';
 
-describe('CheckauthorInterceptor', () => {
+describe('CheckAuthorInterceptor', () => {
   it('should be defined', () => {
-    expect(new CheckauthorInterceptor()).toBeDefined();
+    expect(new CheckAuthorInterceptor()).toBeDefined();
   });
 });

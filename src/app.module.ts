@@ -6,10 +6,16 @@ import { ArticlesModule } from './articles/articles.module';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import config from './config';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   imports: [
     MongooseModule.forRoot(config.mongoUri, { useNewUrlParser: true }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'upload'),
+      serveRoot: '/images'
+    }),
     ArticlesModule,
     UsersModule,
     AuthModule
