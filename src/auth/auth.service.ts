@@ -5,7 +5,7 @@ import { UsersService } from '../users/users.service';
 import { compare } from 'bcrypt';
 
 
-// Implementation sécurité auth
+// Implementation de sécurité auth
 @Injectable()
 export class AuthService {
     constructor(
