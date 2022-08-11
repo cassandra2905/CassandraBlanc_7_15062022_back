@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ReadUserDto } from 'src/users/dto/read-user.dto';
 import { UsersService } from '../users/users.service';
+import { compare } from 'bcrypt';
 
 
 // Implementation sécurité auth
@@ -12,12 +13,16 @@ export class AuthService {
         private readonly jwtService: JwtService
     ) { }
 
+    // On compare le mot de passe de l'utilisateur à la valeur du mot de passe cryptée
     async validateUser(username: string, pass: string): Promise<any> {
         const user = await this.usersService.findOne(username);
-        if (user && user.password === pass) {
+        const isMatch = await compare(pass, user.password);
+
+        if (isMatch) {
 
             // On déconstruit user pour le retourner sans le mot de passe afin de ne pas créer de faille de sécurité
             const { password, ...result } = user;
+
             return result;
         }
         return null;
@@ -28,7 +33,7 @@ export class AuthService {
         const foundUser = await this.usersService.findOne(readUserDto.email);
 
         if (!foundUser) { throw new NotFoundException(); }
-        if (foundUser.password !== readUserDto.password) { throw new NotFoundException(); }
+        if (!await compare(readUserDto.password, foundUser.password)) { throw new NotFoundException(); }
 
         const payload = {
             createdAt: new Date().toISOString(),
@@ -37,6 +42,7 @@ export class AuthService {
             email: foundUser.email
         };
 
+        // Vérification compte admin
         // On vérifie si l'utilisateur est l'admin
         payload.role = foundUser.email === 'admin@admin.fr' ? 'admin' : 'user';
 
